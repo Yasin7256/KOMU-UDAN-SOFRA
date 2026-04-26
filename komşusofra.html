@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Komşu Sofra - İnteraktif Proje Dokümanı</title>
+    
+    <!-- Chosen Palette: Sıcak Krem (Arka plan), Domates Kırmızısı (Aksiyon), Zeytin Yeşili (Güven) -->
+    <!-- Application Structure Plan: Bu SPA, dokümanın uzun metinlerini etkileşimli bir yatırımcı/ürün sunum paneline (dashboard) dönüştürür. "Değer Önerisi" üstte özetlenir. "Kullanıcı Akışları" dinamik sekmelerle (Alıcı/Satıcı) ayrıştırılarak karmaşa önlenir. "GTM ve Finans" verileri interaktif grafiklerle desteklenerek iş modelinin rakiplere göre avantajı vurgulanır. Sol menü hızlı gezinme sağlar. -->
+    <!-- Visualization & Content Choices: 
+         1. Komisyon Karşılaştırması -> Donut Chart (Chart.js) -> Rakip vs Komşu Sofra kazanç farkını net göstermek. 
+         2. Büyüme/GTM -> Line Chart (Chart.js) -> 6 aylık planın yaratacağı momentumu görselleştirmek.
+         3. Kullanıcı Akışları -> Dinamik JS Adım Listesi -> Alıcı ve satıcı yolculuğunu interaktif butonlarla bölmek.
+         4. Riskler -> JS Akordeon -> Hukuki riskleri ve çözümlerini yer kaplamadan, tıklandığında okunabilir kılmak. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: {
+                            50: '#FFFEFC',
+                            100: '#FDFBF7',
+                            200: '#F5EFE3',
+                            300: '#EAE1D0'
+                        },
+                        tomato: {
+                            500: '#E03C31',
+                            600: '#C93329'
+                        },
+                        olive: {
+                            500: '#556B2F',
+                            600: '#455726'
+                        },
+                        dark: '#2D2D2D'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body { background-color: #FDFBF7; color: #2D2D2D; }
+        .nav-active { background-color: #E03C31; color: white; border-radius: 0.5rem; }
+        
+        /* Chart Container Requirements */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container { height: 350px; }
+        }
+
+        /* Hide scrollbar for clean UI */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #F5EFE3; }
+        ::-webkit-scrollbar-thumb { background: #EAE1D0; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #C93329; }
+        
+        .transition-all-fast { transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="font-poppins antialiased overflow-x-hidden">
+
+    <!-- Mobile Header -->
+    <header class="md:hidden bg-white shadow-sm p-4 sticky top-0 z-50 flex justify-between items-center">
+        <div class="text-xl font-bold text-tomato-500">🍲 Komşu Sofra</div>
+        <button id="mobileMenuBtn" class="text-2xl">☰</button>
+    </header>
+
+    <div class="min-h-screen relative block">
+
+        <!-- Sidebar Navigation -->
+        <nav id="sidebar" class="hidden md:flex flex-col w-64 bg-white border-r border-cream-200 fixed h-full z-40 p-6 transition-all-fast transform -translate-x-full md:translate-x-0 overflow-y-auto">
+            <div class="text-2xl font-bold text-tomato-500 mb-8 mt-4 hidden md:block">🍲 Komşu Sofra</div>
+            
+            <div class="space-y-2 flex-grow">
+                <a href="#ozet" class="nav-link nav-active block px-4 py-3 text-sm font-medium transition-all-fast hover:bg-cream-200 hover:text-dark">Değer Önerisi</a>
+                <a href="#akislar" class="nav-link block px-4 py-3 text-sm font-medium transition-all-fast hover:bg-cream-200 hover:text-dark text-gray-600">Kullanıcı Akışları</a>
+                <a href="#mvp" class="nav-link block px-4 py-3 text-sm font-medium transition-all-fast hover:bg-cream-200 hover:text-dark text-gray-600">MVP Özellikleri</a>
+                <a href="#uiux" class="nav-link block px-4 py-3 text-sm font-medium transition-all-fast hover:bg-cream-200 hover:text-dark text-gray-600">UI/UX Kimliği</a>
+                <a href="#gtm" class="nav-link block px-4 py-3 text-sm font-medium transition-all-fast hover:bg-cream-200 hover:text-dark text-gray-600">Go-To-Market Planı</a>
+                <a href="#riskler" class="nav-link block px-4 py-3 text-sm font-medium transition-all-fast hover:bg-cream-200 hover:text-dark text-gray-600">Hukuki Riskler</a>
+                <a href="#is-modeli" class="nav-link block px-4 py-3 text-sm font-medium transition-all-fast hover:bg-cream-200 hover:text-dark text-gray-600">İş Modeli & Mimari</a>
+            </div>
+            
+            <div class="mt-8 pt-6 border-t border-cream-200 text-xs text-gray-500">
+                Doküman Sürümü: 1.0<br>
+                Pazar: Türkiye (C2C)
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="md:ml-64 p-4 sm:p-6 md:p-10 pb-24">
+            
+            <!-- Section: Özet & Değer Önerisi -->
+            <section id="ozet" class="mb-20 scroll-mt-24">
+                <div class="max-w-5xl mx-auto">
+                    <p class="text-olive-500 font-semibold tracking-wider text-sm mb-2 uppercase">Proje Başlangıç Dokümanı (PRD)</p>
+                    <h1 class="text-4xl md:text-5xl font-bold text-dark mb-6 leading-tight">Ev Yemeği Ekonomisini <br><span class="text-tomato-500">Dijitalleştiriyoruz.</span></h1>
+                    
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-cream-200 mb-8 border-l-4 border-l-tomato-500">
+                        <p class="text-lg text-gray-700 leading-relaxed">
+                            <strong>Komşu Sofra</strong>, endüstriyel fast-food döngüsünden sıkılan tüketicileri, kendi mutfağında harikalar yaratan yetenekli ev aşçılarıyla buluşturan hiper-lokal bir pazar yeridir. Ev hanımlarına, emeklilere ve mutfak tutkunlarına adil bir ek gelir kapısı yaratırken, kullanıcılara hijyenik, anne eli değmiş lezzetleri şeffaf bir güven katmanıyla ulaştırır.
+                        </p>
+                    </div>
+
+                    <!-- Quick Stats Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-cream-200 flex items-center space-x-4 min-w-0">
+                            <div class="text-3xl flex-shrink-0">🎯</div>
+                            <div class="min-w-0 overflow-hidden">
+                                <p class="text-xs text-gray-500 font-medium uppercase truncate">Hedef Kitle</p>
+                                <p class="font-bold text-dark truncate">B2C değil C2C</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-cream-200 flex items-center space-x-4 min-w-0">
+                            <div class="text-3xl flex-shrink-0">📍</div>
+                            <div class="min-w-0 overflow-hidden">
+                                <p class="text-xs text-gray-500 font-medium uppercase truncate">Eşleştirme</p>
+                                <p class="font-bold text-dark truncate">Max 3km Yarıçap</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-cream-200 flex items-center space-x-4 min-w-0">
+                            <div class="text-3xl flex-shrink-0">💰</div>
+                            <div class="min-w-0 overflow-hidden">
+                                <p class="text-xs text-gray-500 font-medium uppercase truncate">Gelir Modeli</p>
+                                <p class="font-bold text-dark truncate">%12-15 Komisyon</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Kullanıcı Akışları -->
+            <section id="akislar" class="mb-20 scroll-mt-24">
+                <div class="max-w-5xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-4 text-dark">Kullanıcı Akışları</h2>
+                    <p class="text-gray-600 mb-8">Uygulama içindeki iki farklı rolün (Alıcı ve Satıcı) sistemle nasıl etkileşime girdiğini inceleyin. Rolü değiştirmek için aşağıdaki butonları kullanın.</p>
+
+                    <!-- Toggle Buttons -->
+                    <div class="flex flex-col sm:flex-row p-1 bg-cream-200 rounded-lg max-w-sm mb-8 relative gap-1 sm:gap-0">
+                        <button id="btnAlici" class="flex-1 py-3 sm:py-2 text-sm font-semibold rounded-md transition-all-fast bg-white text-tomato-500 shadow-sm" onclick="switchFlow('alici')">📱 Alıcı Akışı (Consumer)</button>
+                        <button id="btnSatici" class="flex-1 py-3 sm:py-2 text-sm font-semibold rounded-md transition-all-fast text-gray-500 hover:text-dark hover:bg-white/50" onclick="switchFlow('satici')">🧑‍🍳 Satıcı Akışı (Creator)</button>
+                    </div>
+
+                    <!-- Flow Content -->
+                    <div id="flowContent" class="space-y-4">
+                        <!-- JS Will Populate This -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: MVP Özellikleri -->
+            <section id="mvp" class="mb-20 scroll-mt-24">
+                <div class="max-w-5xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-4 text-dark">MVP: İlk 10 Core Özellik</h2>
+                    <p class="text-gray-600 mb-8">Yazılım ekibinin ilk faza (MVP) odaklanması gereken önceliklendirilmiş özellik seti. Detayını görmek için kartlara tıklayın.</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="mvpGrid">
+                        <!-- JS Will Populate This -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: UI/UX -->
+            <section id="uiux" class="mb-20 scroll-mt-24">
+                <div class="max-w-5xl mx-auto bg-olive-600 text-white p-8 md:p-12 rounded-3xl relative overflow-hidden">
+                    <div class="absolute -top-10 -right-10 text-9xl opacity-10">🎨</div>
+                    <h2 class="text-3xl font-bold mb-6 relative z-10">UI/UX Tasarım Kimliği</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 relative z-10">
+                        <div>
+                            <p class="mb-4 text-olive-100 font-light">
+                                <strong>Tasarım Dili:</strong> Etsy'nin insan odaklı sıcaklığı + Yemeksepeti'nin fonksiyonelliği.
+                            </p>
+                            <p class="mb-4 text-olive-100 font-light">
+                                <strong>Font:</strong> Yuvarlak hatlı, okunaklı ve dostane (Poppins/Nunito).
+                            </p>
+                            <div class="flex space-x-3 mt-6">
+                                <div class="w-12 h-12 rounded-full bg-[#FDFBF7] shadow-lg border border-white" title="Sıcak Krem"></div>
+                                <div class="w-12 h-12 rounded-full bg-[#E03C31] shadow-lg border border-white" title="Domates Kırmızısı"></div>
+                                <div class="w-12 h-12 rounded-full bg-[#556B2F] shadow-lg border border-white" title="Zeytin Yeşili"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-olive-500 p-4 rounded-xl">
+                                <h4 class="font-bold text-sm text-cream-100 mb-1">1. Ana Sayfa (Keşfet)</h4>
+                                <p class="text-xs text-olive-100">Yatay vitrin, iştah açıcı büyük fotoğraflar, uzaklık etiketi (örn: 800m) ve altta 3'lü sticky tab bar.</p>
+                            </div>
+                            <div class="bg-olive-500 p-4 rounded-xl">
+                                <h4 class="font-bold text-sm text-cream-100 mb-1">2. Satıcı Profili (Mikro Dükkan)</h4>
+                                <p class="text-xs text-olive-100">Avatar, "Ayşe Teyze" hikayesi, hijyen rozetleri. Kalan porsiyon sayısı ile FOMO etkisi ("Son 2 porsiyon!").</p>
+                            </div>
+                            <div class="bg-olive-500 p-4 rounded-xl">
+                                <h4 class="font-bold text-sm text-cream-100 mb-1">3. Sipariş Ver (Sepet)</h4>
+                                <p class="text-xs text-olive-100">Gel-Al veya Kurye seçimi, satıcı not alanı ve şeffaf hizmet bedeli kırılımı ile büyük yeşil "Güvenle Öde" butonu.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Go-To-Market -->
+            <section id="gtm" class="mb-20 scroll-mt-24">
+                <div class="max-w-5xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-4 text-dark">İlk 6 Ay GTM Planı (Hiper-Lokal)</h2>
+                    <p class="text-gray-600 mb-8">C2C modellerinde "sıvılaşma (liquidity)" sorununu önlemek için tüm Türkiye'ye yayılmak yerine pilot bölgeye odaklanarak başlayan 6 aylık agresif büyüme stratejisi.</p>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        
+                        <!-- Timeline -->
+                        <div class="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-tomato-500 before:via-cream-300 before:to-transparent min-w-0">
+                            <!-- JS Will Populate This Timeline -->
+                            <div id="gtmTimeline"></div>
+                        </div>
+
+                        <!-- Growth Chart -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-cream-200 min-w-0">
+                            <h3 class="font-bold text-lg mb-2 text-center">Öngörülen Kullanıcı & Satıcı Büyümesi</h3>
+                            <p class="text-xs text-center text-gray-500 mb-6">6 aylık GTM planına göre varsayımsal momentum (Pilot Bölge)</p>
+                            <div class="chart-container">
+                                <canvas id="growthChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Hukuki Riskler -->
+            <section id="riskler" class="mb-20 scroll-mt-24">
+                <div class="max-w-5xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-4 text-dark">Hukuki Riskler & Çözümler</h2>
+                    <p class="text-gray-600 mb-8">Türkiye regülasyonlarında evden satışın yarattığı gri alanlara karşı uyguladığımız proaktif çözümler ve ürün mimarisi yaklaşımları.</p>
+
+                    <div class="space-y-3" id="riskAccordion">
+                        <!-- JS Will Populate This -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: İş Modeli & Mimari -->
+            <section id="is-modeli" class="mb-20 scroll-mt-24">
+                <div class="max-w-5xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-4 text-dark">İş Modeli ve Teknik Mimari</h2>
+                    <p class="text-gray-600 mb-8">Sürdürülebilir komisyon yapısı ve hızlı ölçeklenebilen modern teknoloji yığını.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        
+                        <!-- Revenue Model -->
+                        <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-cream-200 min-w-0">
+                            <h3 class="font-bold text-xl mb-6 flex items-center"><span class="text-2xl mr-2">⚖️</span> Komisyon Avantajı</h3>
+                            <div class="chart-container" style="height: 250px;">
+                                <canvas id="commissionChart"></canvas>
+                            </div>
+                            <div class="mt-6 text-sm text-gray-600 bg-cream-100 p-4 rounded-lg">
+                                <strong>Ek Gelir Modelleri:</strong><br>
+                                • Premium Satıcı: Haftalık 99 TL ("Mahallenin Yıldızları" öne çıkarma).<br>
+                                • Teslimat: Kurye opsiyonunda ek teslimat bedeli.
+                            </div>
+                        </div>
+
+                        <!-- Tech Stack -->
+                        <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-cream-200 min-w-0">
+                            <h3 class="font-bold text-xl mb-6 flex items-center"><span class="text-2xl mr-2">⚙️</span> Teknik Mimari (MVP)</h3>
+                            
+                            <div class="space-y-6">
+                                <div>
+                                    <h4 class="font-semibold text-tomato-500 mb-2">Frontend (Mobil App)</h4>
+                                    <div class="flex items-center space-x-3 p-3 bg-cream-50 border border-cream-200 rounded-lg">
+                                        <div class="text-xl">📱</div>
+                                        <div class="text-sm"><strong>Flutter:</strong> Tek kod tabanı ile hızlı iOS/Android çıktısı, düşük maliyet.</div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h4 class="font-semibold text-olive-500 mb-2">Backend & Veritabanı</h4>
+                                    <div class="flex items-center space-x-3 p-3 bg-cream-50 border border-cream-200 rounded-lg">
+                                        <div class="text-xl">☁️</div>
+                                        <div class="text-sm"><strong>Firebase/Supabase:</strong> Gerçek zamanlı DB, Auth ve Storage (hızlı MVP için).</div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold text-dark mb-2">3. Parti Entegrasyonlar</h4>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center space-x-3 p-3 bg-cream-50 border border-cream-200 rounded-lg">
+                                            <div class="text-xl">🗺️</div>
+                                            <div class="text-sm"><strong>Harita:</strong> Google Maps API (Hiper-lokal eşleştirme).</div>
+                                        </div>
+                                        <div class="flex items-center space-x-3 p-3 bg-cream-50 border border-cream-200 rounded-lg">
+                                            <div class="text-xl">💳</div>
+                                            <div class="text-sm"><strong>Ödeme:</strong> iyzico Pazaryeri veya PayTR (C2C Escrow/Havuz altyapısı).</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Application Data & Logic -->
+    <script>
+        // --- DATA OBJECTS ---
+        
+        const flowData = {
+            alici: [
+                { step: 1, title: "Keşif", desc: "Konum izni verilir. Harita/Listede 1-3 km içindeki aktif mutfaklar görüntülenir.", icon: "📍" },
+                { step: 2, title: "Filtreleme", desc: "Zeytinyağlı, Vegan, Ön Sipariş, Bugün Pişenler vb. ihtiyaca göre daraltma yapılır.", icon: "🔍" },
+                { step: 3, title: "Karar", desc: "Satıcı hikayesi (Örn: Ayşe Teyze), yemek fotoları, alerjen bilgisi ve komşu yorumları incelenir.", icon: "🤔" },
+                { step: 4, title: "Sipariş & Ödeme", desc: "Sepete eklenir. Teslimat seçilir (Gel-Al/Kurye). iyzico/PayTR güvenli havuz ile ödenir.", icon: "💳" },
+                { step: 5, title: "Takip & Değerlendirme", desc: "Sipariş durumu canlı izlenir. Teslimat sonrası Lezzet, Temizlik, Zamanlama bazında puanlanır.", icon: "⭐" }
+            ],
+            satici: [
+                { step: 1, title: "Kayıt & Onay", desc: "Tel No, TC Kimlik & e-Devlet Adres teyidi, IBAN girişi. Mutfak ve hijyen beyanı yüklenip onaylanır.", icon: "🔒" },
+                { step: 2, title: "Dükkan Kurulumu", desc: "Profil fotosu/hikaye eklenir. Yemek adı, porsiyon, fiyat ve malzeme girilerek menü yaratılır.", icon: "🏪" },
+                { step: 3, title: "Planlama", desc: "Takvimden aktif günler seçilir. Örn: 'Bugün 10 porsiyon mantım var' limitleri girilir.", icon: "📅" },
+                { step: 4, title: "Sipariş Yönetimi", desc: "Sipariş alınır -> Onaylanır -> Hazırlanıyor -> Teslime Hazır statüleri yönetilir.", icon: "🍲" },
+                { step: 5, title: "Kazanç", desc: "Sipariş teslim edilip alıcı onayladıktan sonra komisyon kesilmiş tutar satıcı IBAN'ına geçer.", icon: "💸" }
+            ]
+        };
+
+        const mvpFeatures = [
+            { id: 1, title: "Konum Tabanlı Eşleştirme", desc: "Max 3 km yarıçapında harita/liste algoritması.", icon: "🗺️" },
+            { id: 2, title: "Rol Bazlı Yönetim", desc: "Tek uygulamada 'Alıcı' ve 'Satıcı' modu arası anında geçiş.", icon: "🔄" },
+            { id: 3, title: "Dükkan/Menü Oluşturucu", desc: "Stok limitli, fotoğraf yüklemeli basit ürün/menü girişi.", icon: "📝" },
+            { id: 4, title: "Güvenli Ödeme Altyapısı", desc: "Paranın sipariş bitene kadar havuzda tutulduğu C2C Escrow.", icon: "🛡️" },
+            { id: 5, title: "Kimlik & Adres Doğrulama", desc: "TC Kimlik entegrasyonu ile şeffaf güven katmanı.", icon: "✅" },
+            { id: 6, title: "Sipariş Durum Takibi", desc: "Bekliyor > Hazırlanıyor > Hazır > Teslim Edildi bildirimleri.", icon: "🔔" },
+            { id: 7, title: "Çift Taraflı Puanlama", desc: "Özellikle satıcının lezzet/temizlik metriklerini şeffaflaştırma.", icon: "📊" },
+            { id: 8, title: "Temel Filtreleme", desc: "Yemek türü, diyet tipi ve 'Hemen Al' vs 'Ön Sipariş'.", icon: "⚙️" },
+            { id: 9, title: "Satıcı Kazanç Paneli", desc: "Tamamlanan siparişler, bekleyen bakiye, para çekme fonksiyonu.", icon: "💰" },
+            { id: 10, title: "'Bugün Pişti' Bildirimleri", desc: "Satıcı yemek eklediğinde mahalleye giden anlık push bildirim.", icon: "📲" }
+        ];
+
+        const gtmPlan = [
+            { month: "1. Ay", title: "Tedarik İnşası", desc: "Pilot bölgede (örn: Moda) 50 erken benimseyen ev aşçısını bulma ve menülerini hazırlama." },
+            { month: "2. Ay", title: "Yumuşak Lansman", desc: "Sadece üniversiteli ve beyaz yakalıya 'Gel-Al' odaklı yerel Instagram reklamları." },
+            { month: "3. Ay", title: "Sosyal Kanıt & İyileştirme", desc: "Yorum/Puan toplanması. Satıcılara 'Nasıl iyi fotoğraf çekilir?' eğitimleri." },
+            { month: "4. Ay", title: "Abonelik & Kurye Testi", desc: "Haftalık menü aboneliği beta testi ve isteğe bağlı yerel yaya/scooter kurye denemesi." },
+            { month: "5. Ay", title: "Büyüme Döngüsü", desc: "Tavsiye (Referral) programı: 'Komşunu satıcı yap, 200 TL kazan'." },
+            { month: "6. Ay", title: "Genişleme & PR", desc: "5 yeni ilçeye açılım. Ulusal basına 'Ev Ekonomisi' PR'ı ve Tohum (Seed) yatırım turu." }
+        ];
+
+        const legalRisks = [
+            { risk: "Gıda ve Tarım Bakanlığı Mevzuatı", solution: "Sözleşmeye 'Sadece ev yapımı ve ticari işletme boyutunu aşmayan üretim' maddesi. Uygulama sadece 'ilan panosu ve aracı' konumunda." },
+            { risk: "Vergi Yükümlülüğü", solution: "Gelir Vergisi Kanunu 'Esnaf Muaflığı' sınırları anlatılır. Sınırı aşanlardan Esnaf Muafiyet Belgesi istenir." },
+            { risk: "KVKK ve Gizlilik", solution: "Satıcı kapı numarası sipariş onaylanana kadar gizlidir. Haritada 500m'lik 'yaklaşık alan' gösterilir." },
+            { risk: "Gıda Zehirlenmesi / Şikayetler", solution: "Sorumluluk satıcıdadır. 3 farklı alıcıdan 'Hijyen/Bozuk' şikayeti alan profil OTOMATİK askıya alınır. Kayıtta 'Hijyen Taahhütnamesi' imzalatılır." }
+        ];
+
+        // --- DOM MANIPULATION & LOGIC ---
+
+        // Render Flows
+        function switchFlow(type) {
+            const btnAlici = document.getElementById('btnAlici');
+            const btnSatici = document.getElementById('btnSatici');
+            const flowContainer = document.getElementById('flowContent');
+            
+            // Styling
+            if (type === 'alici') {
+                btnAlici.className = "flex-1 py-3 sm:py-2 text-sm font-semibold rounded-md transition-all-fast bg-white text-tomato-500 shadow-sm";
+                btnSatici.className = "flex-1 py-3 sm:py-2 text-sm font-semibold rounded-md transition-all-fast text-gray-500 hover:text-dark hover:bg-white/50";
+            } else {
+                btnSatici.className = "flex-1 py-3 sm:py-2 text-sm font-semibold rounded-md transition-all-fast bg-white text-olive-500 shadow-sm";
+                btnAlici.className = "flex-1 py-3 sm:py-2 text-sm font-semibold rounded-md transition-all-fast text-gray-500 hover:text-dark hover:bg-white/50";
+            }
+
+            // Populate Content
+            let html = '';
+            flowData[type].forEach(item => {
+                html += `
+                    <div class="bg-white border border-cream-200 rounded-xl p-4 flex items-start space-x-4 shadow-sm hover:border-${type==='alici'?'tomato':'olive'}-500 transition-all-fast transform hover:-translate-y-1">
+                        <div class="w-10 h-10 rounded-full bg-cream-200 flex items-center justify-center text-xl flex-shrink-0">${item.icon}</div>
+                        <div>
+                            <h4 class="font-bold text-dark text-sm mb-1"><span class="text-gray-400 mr-2">Adım ${item.step}</span> ${item.title}</h4>
+                            <p class="text-sm text-gray-600">${item.desc}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            flowContainer.innerHTML = html;
+        }
+
+        // Render MVP Features
+        function renderMVP() {
+            const grid = document.getElementById('mvpGrid');
+            let html = '';
+            mvpFeatures.forEach(feature => {
+                html += `
+                    <div class="bg-white p-5 rounded-xl border border-cream-200 shadow-sm hover:shadow-md transition-all-fast cursor-default group relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-8 h-8 bg-cream-100 rounded-bl-xl flex items-center justify-center text-xs font-bold text-gray-400 group-hover:bg-tomato-500 group-hover:text-white transition-colors">#${feature.id}</div>
+                        <div class="text-3xl mb-3">${feature.icon}</div>
+                        <h4 class="font-bold text-dark mb-2 text-sm">${feature.title}</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed">${feature.desc}</p>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        }
+
+        // Render GTM Timeline
+        function renderGTM() {
+            const container = document.getElementById('gtmTimeline');
+            let html = '';
+            gtmPlan.forEach((plan, index) => {
+                html += `
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-cream-200 text-tomato-500 group-hover:bg-tomato-500 group-hover:text-white font-bold text-xs shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-colors">
+                            ${index + 1}
+                        </div>
+                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded-xl border border-cream-200 shadow-sm">
+                            <div class="flex items-center justify-between mb-1">
+                                <h4 class="font-bold text-dark text-sm">${plan.title}</h4>
+                                <span class="text-xs font-semibold text-olive-500 bg-olive-500/10 px-2 py-1 rounded">${plan.month}</span>
+                            </div>
+                            <p class="text-xs text-gray-600">${plan.desc}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // Render Risks Accordion
+        function renderRisks() {
+            const container = document.getElementById('riskAccordion');
+            let html = '';
+            legalRisks.forEach((item, index) => {
+                html += `
+                    <div class="bg-white border border-cream-200 rounded-xl overflow-hidden">
+                        <button class="w-full px-5 py-4 text-left font-bold text-sm text-dark hover:bg-cream-50 flex justify-between items-center transition-colors" onclick="toggleAccordion('risk-${index}')">
+                            <span class="flex items-center"><span class="text-tomato-500 mr-3">⚠️</span> ${item.risk}</span>
+                            <span id="icon-risk-${index}" class="text-gray-400 transform transition-transform">+</span>
+                        </button>
+                        <div id="risk-${index}" class="hidden px-5 pb-4 pt-1 border-t border-cream-100 bg-cream-50">
+                            <div class="flex items-start mt-2">
+                                <span class="text-olive-500 mr-2 mt-0.5">💡</span>
+                                <p class="text-sm text-gray-700 leading-relaxed"><strong>Çözüm:</strong> ${item.solution}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById(`icon-${id}`);
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(45deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // --- CHARTS INITIALIZATION ---
+
+        function initCharts() {
+            Chart.defaults.font.family = "'Poppins', sans-serif";
+            Chart.defaults.color = '#6b7280';
+
+            // 1. Commission Chart (Doughnut)
+            const ctxComm = document.getElementById('commissionChart').getContext('2d');
+            new Chart(ctxComm, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Platform Komisyonu (%)', 'Satıcı Kazancı (%)'],
+                    datasets: [
+                        {
+                            label: 'Komşu Sofra',
+                            data: [15, 85],
+                            backgroundColor: ['#E03C31', '#556B2F'],
+                            borderWidth: 0,
+                            hoverOffset: 4
+                        },
+                        {
+                            label: 'Geleneksel Rakipler',
+                            data: [30, 70],
+                            backgroundColor: ['#d1d5db', '#9ca3af'],
+                            borderWidth: 0,
+                            hidden: true // Can be toggled via legend
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: {size: 11} } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.label + ' -> %' + context.raw;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+
+            // 2. Growth Chart (Line)
+            const ctxGrowth = document.getElementById('growthChart').getContext('2d');
+            new Chart(ctxGrowth, {
+                type: 'line',
+                data: {
+                    labels: ['1. Ay', '2. Ay', '3. Ay', '4. Ay', '5. Ay', '6. Ay'],
+                    datasets: [
+                        {
+                            label: 'Aktif Alıcılar',
+                            data: [100, 350, 800, 1500, 3200, 7500],
+                            borderColor: '#E03C31',
+                            backgroundColor: 'rgba(224, 60, 49, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Aktif Ev Aşçıları',
+                            data: [50, 80, 150, 250, 400, 800],
+                            borderColor: '#556B2F',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            borderDash: [5, 5]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: {size: 10} } },
+                        tooltip: { padding: 10, cornerRadius: 4 }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#F5EFE3' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        // --- NAVIGATION & INIT ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Init components
+            switchFlow('alici');
+            renderMVP();
+            renderGTM();
+            renderRisks();
+            initCharts();
+
+            // Mobile menu toggle
+            const mobileBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            mobileBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                sidebar.classList.toggle('hidden');
+            });
+
+            // Scrollspy / Navigation Highlighting
+            const sections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (scrollY >= sectionTop - 100) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('nav-active', 'bg-cream-200', 'text-dark');
+                    link.classList.add('text-gray-600');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.remove('text-gray-600');
+                        link.classList.add('nav-active');
+                    }
+                });
+            });
+
+            // Smooth scroll for nav links and close mobile menu
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+                    
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.add('-translate-x-full');
+                        setTimeout(() => sidebar.classList.add('hidden'), 300);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

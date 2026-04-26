@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Komşu Sofra — Ev Yemeğinin Dijital Hali</title>
+    <meta name="description" content="Mahallenizdeki yetenekli ev aşçılarının sıcacık yemeklerine tek dokunuşla ulaşın. Komşu Sofra, yakında.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ═══════════ SPLASH INTRO ═══════════ -->
+<div class="splash" id="splash">
+    <div class="splash-bg"></div>
+    <div class="splash-content">
+        <img src="images/ks.logo.png" alt="Komşu Sofra" class="splash-logo" id="splashLogo">
+        <div class="splash-line" id="splashLine"></div>
+        <p class="splash-text" id="splashText">Mutfaktaki emeği, mahallenin sofrasıyla buluşturuyoruz</p>
+    </div>
+</div>
+
+<!-- Cursor Glow -->
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- Navbar -->
+<nav class="nav" id="navbar">
+    <div class="container">
+        <a href="#" class="nav-logo"><img src="images/ks.logo.png" alt="Komşu Sofra" class="nav-logo-img"> Komşu Sofra</a>
+        <ul class="nav-links">
+            <li><a href="#features">Özellikler</a></li>
+            <li><a href="#hiw">Nasıl Çalışır</a></li>
+            <li><a href="#seller">Satıcı Ol</a></li>
+            <li><a href="#trust">Güvenlik</a></li>
+            <li><a href="#tech">Teknoloji</a></li>
+        </ul>
+        <a href="#waitlist" class="nav-cta">İletişime Geç</a>
+        <button class="hamburger" id="hbg" aria-label="Menü">☰</button>
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mob-menu" id="mobMenu">
+    <button class="mob-close" id="mobClose">✕</button>
+    <a href="#features" class="ml">Özellikler</a>
+    <a href="#hiw" class="ml">Nasıl Çalışır</a>
+    <a href="#seller" class="ml">Satıcı Ol</a>
+    <a href="#trust" class="ml">Güvenlik</a>
+    <a href="#tech" class="ml">Teknoloji</a>
+    <a href="#waitlist" class="ml" style="color:var(--accent)">İletişime Geç</a>
+</div>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero" id="hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="hero-bg"><canvas id="particles"></canvas></div>
+    <div class="hero-inner">
+        <div class="hero-chip r">✨ C2C EV YEMEĞİ PAZARI — TÜRKİYE'NİN İLKİ</div>
+        <h1 class="r r1">Evin Lezzeti,<br><span class="glow">Kapında.</span></h1>
+        <p class="r r2">Türkiye'de her gün milyonlarca insan endüstriyel fast-food döngüsüne mahkum. Oysa 800 metre ötede, komşunun mutfağında muhteşem bir ev yemeği pişiyor. Komşu Sofra, bu iki dünyayı buluşturuyor.</p>
+        <div class="hero-btns r r3">
+            <a href="#waitlist" class="btn-g"><span>🔔</span> Erken Erişim Listesine Katıl</a>
+            <a href="#hiw" class="btn-o"><span>▼</span> Nasıl Çalışır?</a>
+        </div>
+        <div class="hero-phone r r4">
+            <img src="images/phone-mockup.png" alt="Komşu Sofra Uygulama">
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════ MARQUEE ═══════════ -->
+<div class="marquee">
+    <div class="marquee-inner" id="marquee">
+        <span><em>📍</em> Hiper-Lokal Eşleştirme</span>
+        <span><em>🛡️</em> Güvenli Escrow Ödeme</span>
+        <span><em>⭐</em> Çift Taraflı Puanlama</span>
+        <span><em>🧑‍🍳</em> Ev Aşçısı Ağı</span>
+        <span><em>📲</em> Anlık Bildirimler</span>
+        <span><em>🔒</em> TC Kimlik Doğrulama</span>
+        <span><em>🗺️</em> 3km Yarıçap</span>
+        <span><em>💰</em> %85 Satıcı Kazancı</span>
+        <!-- duplicate for seamless -->
+        <span><em>📍</em> Hiper-Lokal Eşleştirme</span>
+        <span><em>🛡️</em> Güvenli Escrow Ödeme</span>
+        <span><em>⭐</em> Çift Taraflı Puanlama</span>
+        <span><em>🧑‍🍳</em> Ev Aşçısı Ağı</span>
+        <span><em>📲</em> Anlık Bildirimler</span>
+        <span><em>🔒</em> TC Kimlik Doğrulama</span>
+        <span><em>🗺️</em> 3km Yarıçap</span>
+        <span><em>💰</em> %85 Satıcı Kazancı</span>
+    </div>
+</div>
+
+<!-- ═══════════ FEATURES (BENTO) ═══════════ -->
+<section class="features" id="features">
+    <div class="orb orb-3"></div>
+    <div class="container tc">
+        <div class="slabel r">Neden Komşu Sofra?</div>
+        <h2 class="stitle r">Yemek siparişinin<br>yeniden tanımı.</h2>
+        <p class="sdesc r">Komşu Sofra, ev hanımlarını, emeklileri ve mutfak tutkunlarını — endüstriyel gıdadan sıkılan tüketicilerle buluşturan hiper-lokal bir C2C pazar yeridir.</p>
+    </div>
+    <div class="container">
+        <div class="bento">
+            <div class="bento-card big r">
+                <div class="bento-icon">📍</div>
+                <h3>Hiper-Lokal Eşleştirme</h3>
+                <p>Maksimum 3 km yarıçapında, taptaze ve sıcacık ev yemeklerine ulaşın. Harita ve liste görünümüyle en yakın komşu aşçılar bir tık uzağınızda. Uzaklık etiketleri ("800m", "1.2km") ile en yakın lezzeti anında görün. Google Maps API entegrasyonu ile kusursuz konum deneyimi.</p>
+            </div>
+            <div class="bento-card r r1">
+                <div class="bento-icon">🔄</div>
+                <h3>Çift Rol, Tek Uygulama</h3>
+                <p>Alıcı ve satıcı modu arasında tek dokunuşla geçiş. Bugün ye, yarın pişir. Herkes hem tüketici hem üretici olabilir.</p>
+            </div>
+            <div class="bento-card r r2">
+                <div class="bento-icon">🛡️</div>
+                <h3>Escrow Ödeme Güvencesi</h3>
+                <p>iyzico Pazaryeri / PayTR altyapısıyla paranız, sipariş teslim edilip siz onaylayana kadar güvenli havuzda. Satıcıya ödeme ancak sizin onayınızla.</p>
+            </div>
+            <div class="bento-card big r r3">
+                <div class="bento-icon">⭐</div>
+                <h3>Şeffaf Güven Katmanı</h3>
+                <p>Lezzet, hijyen ve zamanlama bazında çift taraflı değerlendirme sistemi. Satıcı profillerinde TC Kimlik doğrulama, hijyen beyanı rozetleri ve gerçek komşu yorumları. 3 farklı alıcıdan hijyen şikayeti = otomatik askıya alma. Sıfır tolerans.</p>
+            </div>
+            <div class="bento-card r r4">
+                <div class="bento-icon">📲</div>
+                <h3>"Bugün Ne Pişti?"</h3>
+                <p>Satıcı yemek eklediğinde mahalleye anlık push bildirim. "Son 2 porsiyon!" FOMO etkisiyle organik talep yaratma. Asla kaçırmazsınız.</p>
+            </div>
+            <div class="bento-card r">
+                <div class="bento-icon">📅</div>
+                <h3>Ön Sipariş & Abonelik</h3>
+                <p>Haftalık menü aboneliği oluşturun. "Her Salı Ayşe Teyze'den mantı" gibi düzenli siparişlerle hem siz hem aşçınız planlı çalışsın.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════ HOW IT WORKS ═══════════ -->
+<section class="hiw" id="hiw">
+    <div class="container tc">
+        <div class="slabel r">Alıcı Deneyimi</div>
+        <h2 class="stitle r">Dört adımda<br>sofranız hazır.</h2>
+        <p class="sdesc r">Konum paylaşın, keşfedin, sipariş verin. Gerisi bizde.</p>
+    </div>
+    <div class="container">
+        <div class="hiw-grid">
+            <div class="steps">
+                <div class="step r">
+                    <div class="step-n">1</div>
+                    <div><h4>Keşfet</h4><p>Konum izni verin, 1–3 km içindeki aktif mutfaklar haritada belirsin. Zeytinyağlı, vegan, bugün pişenler, ön sipariş — dilediğiniz gibi filtreleyin.</p></div>
+                </div>
+                <div class="step r r1">
+                    <div class="step-n">2</div>
+                    <div><h4>İncele & Güven</h4><p>Satıcı profilini açın: "Ayşe Teyze"nin hikayesini okuyun, hijyen rozetlerini kontrol edin, iştah açıcı fotoğraflara ve komşu yorumlarına göz atın. Alerjen bilgileri şeffaf.</p></div>
+                </div>
+                <div class="step r r2">
+                    <div class="step-n">3</div>
+                    <div><h4>Sipariş & Öde</h4><p>Sepete ekleyin, teslimat yöntemini seçin: "Gel-Al" ile sıcak sıcak alın veya yerel kurye ile kapınıza getirin. Şeffaf hizmet bedeli kırılımı, büyük yeşil "Güvenle Öde" butonu.</p></div>
+                </div>
+                <div class="step r r3">
+                    <div class="step-n">4</div>
+                    <div><h4>Değerlendir & Tekrarla</h4><p>Canlı sipariş takibiyle yemeğinizi bekleyin. Teslim sonrası lezzet, temizlik ve zamanlama puanlayın. Favori aşçılarınızı takip edin, bir sonraki yemeğinizi garanti altına alın.</p></div>
+                </div>
+            </div>
+            <div class="hiw-visual r">
+                <img src="images/hero-food.png" alt="Ev yapımı lezzetler">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════ SELLER ═══════════ -->
+<section class="seller" id="seller">
+    <div class="orb orb-1" style="top:auto;bottom:-200px;left:auto;right:-200px"></div>
+    <div class="container">
+        <div class="seller-grid">
+            <div class="seller-img r">
+                <img src="images/seller-portrait.png" alt="Ev aşçısı">
+            </div>
+            <div class="seller-txt">
+                <div class="slabel r">Satıcı Yolculuğu</div>
+                <h2 class="r">Mutfağındaki emeği,<br><span class="glow">gelire dönüştür.</span></h2>
+                <p class="r">Ev hanımı, emekli, üniversite öğrencisi veya mutfak tutkunu — kim olursan ol. Komşu Sofra'da kendi mutfağından, kendi programınla, sıfır yatırımla satışa başla. Kayıt ol, menünü oluştur, takvimini ayarla. Sipariş geldiğinde hazırla, teslim et, kazan.</p>
+                <div class="seller-stats r">
+                    <div class="s-stat"><h3>%85</h3><p>Kazancın sana kalır</p></div>
+                    <div class="s-stat"><h3>0₺</h3><p>Başlangıç maliyeti</p></div>
+                    <div class="s-stat"><h3>3km</h3><p>Hiper-lokal müşteriler</p></div>
+                </div>
+                <p class="r" style="font-size:.88rem;color:var(--txt2);margin-top:12px;line-height:1.6;">📋 TC Kimlik & e-Devlet adres teyidi · 📸 Mutfak fotoğrafı beyanı · 💰 IBAN ile otomatik ödeme · 📊 Kazanç paneli ile tam kontrol</p>
+                <a href="#waitlist" class="btn-g r" style="margin-top:24px;">🧑‍🍳 Satıcı Olarak Ön Kayıt Yap</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════ TRUST ═══════════ -->
+<section class="trust" id="trust">
+    <div class="container tc">
+        <div class="slabel r">Güvenlik & Hukuki Altyapı</div>
+        <h2 class="stitle r">Her katmanda<br>güvenlik.</h2>
+        <p class="sdesc r">Türkiye regülasyonlarına uyumlu, hem alıcılar hem satıcılar için proaktif güvenlik mimarisi.</p>
+    </div>
+    <div class="container">
+        <div class="trust-grid">
+            <div class="t-card r">
+                <span class="t-icon">🔒</span>
+                <h3>Kimlik & Adres Doğrulama</h3>
+                <p>TC Kimlik entegrasyonu ve e-Devlet adres teyidi ile tüm satıcılar doğrulanır. Haritada satıcının tam adresi değil, 500m yaklaşık alan gösterilir. Kapı numarası ancak sipariş onaylandığında paylaşılır.</p>
+            </div>
+            <div class="t-card r r1">
+                <span class="t-icon">💳</span>
+                <h3>Escrow (Havuz) Ödeme</h3>
+                <p>iyzico Pazaryeri altyapısıyla para, sipariş teslim edilip alıcı onaylayana kadar güvenli havuzda tutulur. Anlaşmazlık durumunda arabuluculuk mekanizması devreye girer.</p>
+            </div>
+            <div class="t-card r r2">
+                <span class="t-icon">🧹</span>
+                <h3>Hijyen Sıfır Tolerans</h3>
+                <p>Kayıtta "Hijyen Taahhütnamesi" imzalanır. 3 farklı alıcıdan "bozuk/hijyensiz" şikayeti alan profil OTOMATİK askıya alınır. Mutfak fotoğrafı beyanı zorunludur.</p>
+            </div>
+            <div class="t-card r">
+                <span class="t-icon">⚖️</span>
+                <h3>Hukuki Uyumluluk</h3>
+                <p>Platform "ilan panosu ve aracı" konumundadır. Gelir Vergisi Kanunu esnaf muafiyet sınırları kullanıcılara bildirilir. KVKK uyumlu veri işleme politikası.</p>
+            </div>
+            <div class="t-card r r1">
+                <span class="t-icon">📍</span>
+                <h3>Gizlilik Koruması</h3>
+                <p>Satıcı adresi sipariş onaylanana kadar gizlidir. Haritada yalnızca yaklaşık konum gösterilir. Kişisel veriler KVKK standartlarında korunur.</p>
+            </div>
+            <div class="t-card r r2">
+                <span class="t-icon">🔔</span>
+                <h3>Canlı Sipariş Takibi</h3>
+                <p>Bekliyor → Onaylandı → Hazırlanıyor → Teslime Hazır → Teslim Edildi. Her adımda push bildirim ile anlık güncelleme.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════ STATS ═══════════ -->
+<section class="stats">
+    <div class="container">
+        <div class="stats-g">
+            <div class="stat r"><h3><span class="ctr" data-t="3">0</span>km</h3><p>Maksimum Teslimat Yarıçapı</p></div>
+            <div class="stat r r1"><h3>%<span class="ctr" data-t="85">0</span></h3><p>Satıcıya Kalan Kazanç</p></div>
+            <div class="stat r r2"><h3><span class="ctr" data-t="12">0</span>%</h3><p>Platform Komisyonu</p></div>
+            <div class="stat r r3"><h3><span class="ctr" data-t="0">0</span>₺</h3><p>Satıcı Başlangıç Maliyeti</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════ TESTIMONIALS ═══════════ -->
+<section class="testi">
+    <div class="container tc">
+        <div class="slabel r">Beta Kullanıcı Deneyimleri</div>
+        <h2 class="stitle r">Komşularımız<br>ne diyor?</h2>
+        <p class="sdesc r">Erken erişim kullanıcılarımızdan gelen ilk izlenimler.</p>
+    </div>
+    <div class="container">
+        <div class="testi-grid">
+            <div class="testi-card r">
+                <div class="quote">"</div>
+                <p>"Ofiste her gün aynı paket servislere mahkumduk. İlk denememde komşudan mantı sipariş ettim — kutudan çıkan koku bile farklıydı. Artık fast-food'a dönüş yok."</p>
+                <div class="testi-author"><div class="testi-av">EA</div><div><div class="testi-name">Elif A.</div><div class="testi-role">Yazılımcı · Kadıköy</div></div></div>
+            </div>
+            <div class="testi-card r r1">
+                <div class="quote">"</div>
+                <p>"Emekli olduktan sonra günlerim boş geçiyordu. Şimdi haftada 3 gün yemek yapıyorum, güzel bir ek gelirim var ve en önemlisi insanlar beni takdir ediyor. Moral motivasyon."</p>
+                <div class="testi-author"><div class="testi-av">FT</div><div><div class="testi-name">Fatma T.</div><div class="testi-role">Ev Aşçısı · Moda</div></div></div>
+            </div>
+            <div class="testi-card r r2">
+                <div class="quote">"</div>
+                <p>"800 metre ötedeki Ayşe Teyze'nin zeytinyağlılarını 'Gel-Al' ile aldım. Elimde sıcak sıcak, fiyatı makul, hijyen puanı yüksek. Daha ne olsun?"</p>
+                <div class="testi-author"><div class="testi-av">MK</div><div><div class="testi-name">Murat K.</div><div class="testi-role">Öğrenci · Beşiktaş</div></div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════ TEKNOLOJİ ═══════════ -->
+<section class="hiw" id="tech">
+    <div class="container tc">
+        <div class="slabel r">Teknik Altyapı</div>
+        <h2 class="stitle r">Hızlı, ölçeklenebilir,<br>modern mimari.</h2>
+        <p class="sdesc r">MVP'den ölçeklenmeye hazır bir teknoloji yığını ile inşa ediyoruz.</p>
+    </div>
+    <div class="container">
+        <div class="hiw-grid">
+            <div class="steps">
+                <div class="step r">
+                    <div class="step-n">📱</div>
+                    <div><h4>Flutter ile Tek Kod Tabanı</h4><p>iOS ve Android için tek kod tabanı ile hızlı geliştirme, düşük maliyet. Etsy sıcaklığı + Yemeksepeti fonksiyonelliği tasarım diliyle.</p></div>
+                </div>
+                <div class="step r r1">
+                    <div class="step-n">☁️</div>
+                    <div><h4>Firebase / Supabase Backend</h4><p>Gerçek zamanlı veritabanı, kimlik doğrulama ve dosya depolama. Hızlı MVP geliştirme için serverless mimari.</p></div>
+                </div>
+                <div class="step r r2">
+                    <div class="step-n">🗺️</div>
+                    <div><h4>Google Maps API</h4><p>Hiper-lokal eşleştirme motoru. Yarıçap bazlı filtreleme, canlı konum takibi ve rota optimizasyonu.</p></div>
+                </div>
+                <div class="step r r3">
+                    <div class="step-n">💳</div>
+                    <div><h4>iyzico Pazaryeri Entegrasyonu</h4><p>C2C escrow (havuz) ödeme altyapısı. Alt Üye İşyeri modeli ile komisyon otomasyonu ve IBAN bazlı satıcı ödemeleri.</p></div>
+                </div>
+            </div>
+            <div class="hiw-visual r" style="align-self:center">
+                <div style="background:var(--glass);border:1px solid var(--glass-b);border-radius:24px;padding:40px;text-align:center">
+                    <div style="font-size:4rem;margin-bottom:20px">🚀</div>
+                    <h3 style="font-size:1.3rem;margin-bottom:12px">Pilot Bölge: İstanbul</h3>
+                    <p style="color:var(--txt2);font-size:.9rem;line-height:1.6">İlk 6 ayda tek bir mahallede (örn: Moda/Kadıköy) derinlemesine penetrasyon. Sıvılaşma (liquidity) sorunu çözüldükten sonra 5 yeni ilçeye genişleme. Hedef: 50 aktif satıcı, 7.500 kullanıcı.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════ WAITLIST ═══════════ -->
+<section class="cta" id="waitlist" style="padding:120px 24px;text-align:center;position:relative;overflow:hidden">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,107,53,.1) 0%,transparent 70%)"></div>
+    <div class="container" style="position:relative">
+        <div class="slabel r">Yakında</div>
+        <h2 class="stitle r">Projeye ilgi mi<br>duyuyorsunuz?</h2>
+        <p class="sdesc r" style="margin-bottom:40px">Komşu Sofra şu anda geliştirme aşamasında. Yatırımcı, iş ortağı veya erken kullanıcı olarak ilgileniyorsanız bizimle iletişime geçin.</p>
+        <a href="mailto:info@komsusofra.com" class="btn-g r" style="font-size:1.05rem">📩 İletişime Geç</a>
+    </div>
+</section>
+
+
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer class="footer">
+    <div class="container">
+        <div class="f-grid">
+            <div class="f-brand"><h3><img src="images/ks.logo.png" alt="Komşu Sofra" style="height:28px;display:inline-block;vertical-align:middle;margin-right:8px;">Komşu Sofra</h3><p>Ev yapımı lezzetleri güvenli ve hiper-lokal bir şekilde kapınıza getiren dijital pazar yeri.</p></div>
+            <div class="f-col"><h4>Ürün</h4><ul><li><a href="#features">Özellikler</a></li><li><a href="#hiw">Nasıl Çalışır</a></li><li><a href="#seller">Satıcı Ol</a></li></ul></div>
+            <div class="f-col"><h4>Şirket</h4><ul><li><a href="#">Hakkımızda</a></li><li><a href="#">Kariyer</a></li><li><a href="#">Blog</a></li></ul></div>
+            <div class="f-col"><h4>Destek</h4><ul><li><a href="#">Yardım Merkezi</a></li><li><a href="#">Gizlilik</a></li><li><a href="#">Kullanım Koşulları</a></li></ul></div>
+        </div>
+        <div class="f-bottom"><span>© 2026 Komşu Sofra. Tüm hakları saklıdır.</span><div class="f-social"><a href="#">📷</a><a href="#">🐦</a><a href="#">💼</a></div></div>
+    </div>
+</footer>
+
+<script>
+// ── Particle Background ──
+const canvas=document.getElementById('particles'),ctx=canvas.getContext('2d');
+let W,H,pts=[];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+window.addEventListener('resize',resize);resize();
+for(let i=0;i<80;i++)pts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2+.5,dx:(Math.random()-.5)*.4,dy:(Math.random()-.5)*.4,o:Math.random()*.5+.1});
+function drawP(){ctx.clearRect(0,0,W,H);pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;
+if(p.x<0||p.x>W)p.dx*=-1;if(p.y<0||p.y>H)p.dy*=-1;
+ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,107,53,${p.o})`;ctx.fill()});
+// Lines
+for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);
+if(d<120){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);
+ctx.strokeStyle=`rgba(255,107,53,${.06*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}}
+requestAnimationFrame(drawP)}drawP();
+
+// ── Scroll Reveal ──
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on')}),{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.r').forEach(el=>obs.observe(el));
+
+// ── Counter ──
+const cObs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){const el=x.target,t=+el.dataset.t;
+if(t===0){el.textContent='0';cObs.unobserve(el);return}let c=0;const s=t/(2000/16);
+const iv=setInterval(()=>{c+=s;if(c>=t){el.textContent=t;clearInterval(iv)}else el.textContent=Math.floor(c)},16);
+cObs.unobserve(el)}}),{threshold:.5});
+document.querySelectorAll('.ctr').forEach(el=>cObs.observe(el));
+
+// ── Mobile Menu ──
+const hbg=document.getElementById('hbg'),mobM=document.getElementById('mobMenu'),mobC=document.getElementById('mobClose');
+hbg.addEventListener('click',()=>mobM.classList.add('open'));
+mobC.addEventListener('click',()=>mobM.classList.remove('open'));
+document.querySelectorAll('.ml').forEach(a=>a.addEventListener('click',()=>mobM.classList.remove('open')));
+
+// ── Cursor Glow ──
+const glow=document.getElementById('cursorGlow');
+document.addEventListener('mousemove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px';glow.classList.add('visible')});
+document.addEventListener('mouseleave',()=>glow.classList.remove('visible'));
+
+// ── Navbar BG ──
+window.addEventListener('scroll',()=>{document.getElementById('navbar').style.background=scrollY>60?'rgba(5,5,5,.95)':'rgba(5,5,5,.6)'});
+
+// ── Splash Screen ──
+(function(){
+    const splash=document.getElementById('splash');
+    const logo=document.getElementById('splashLogo');
+    const line=document.getElementById('splashLine');
+    const text=document.getElementById('splashText');
+    document.body.style.overflow='hidden';
+    // 1) Logo fade in
+    setTimeout(()=>logo.classList.add('show'),300);
+    // 2) Line expand
+    setTimeout(()=>line.classList.add('show'),1000);
+    // 3) Text fade in
+    setTimeout(()=>text.classList.add('show'),1400);
+    // 4) Start exit
+    setTimeout(()=>{
+        splash.classList.add('exit');
+        document.body.style.overflow='';
+    },3600);
+    // 5) Remove splash
+    setTimeout(()=>splash.remove(),4600);
+})();
+</script>
+</body>
+</html>
